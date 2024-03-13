@@ -48,6 +48,29 @@ router.post('/question', async (req, res) => {
     }
 });
 
+router.post('/order', async (req, res) => {
+    try {
+        const { name, lastName, phone, delivery, address, price } = req.body; 
+        const message = `<b>Новый заказ!</b>\n\n<b>Имя:</b> ${name}\n<b>Фамилия:</b> ${lastName}\n<b>Номер телефона:</b> ${phone}\n<b>Доставка:</b> ${delivery.length >= 1 ? delivery : 'Не указан'}\n<b>Адрес:</b> ${address.length >= 1 ? address : 'Не указан'}\n<b>На сумму:</b> ${price} руб.` 
+
+        await bot.telegram.sendMessage(
+            chatId, 
+            message,
+            {
+                parse_mode: 'HTML',
+            }
+        ).then(() => {
+            res.status(200).json({ message: 'Сообщение успешно отправлено' });
+        }).catch((err) => {
+            console.error(err);
+            res.status(500).json({ message: 'Ошибка при отправке сообщения' });
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Ошибка сервера' });
+    }
+})
+
 app.listen(port, (err) => {
     if (err) {
         console.log(err);
@@ -57,56 +80,6 @@ app.listen(port, (err) => {
 });
 
 bot.launch();
-
-// import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
-// import { Markup, Telegraf } from 'telegraf';
-// import { CheckoutOrderDto } from './dto/checkoutOrder.dto';
-// import { QuestionDto } from './dto/question.dto';
-// import { ReviewDto } from './dto/review.dto';
-// import { ForceReply, InlineKeyboardMarkup } from 'telegraf/typings/core/types/typegram';
-
-// @Injectable()
-// export class TelegramService {
-//   constructor(@Inject('TELEGRAM') private readonly telegram: Telegraf<any>) {}
-
-//   async sendMessage(chatId: number, checkoutOrderDto: CheckoutOrderDto): Promise<{ message: string }> {
-//     try {
-//       const message: string = `<b>Новый заказ!</b>\n\n<b>Имя:</b> ${checkoutOrderDto.name}\n<b>Фамилия:</b> ${checkoutOrderDto.lastName}\n<b>Номер телефона:</b> ${checkoutOrderDto.phone}\n<b>Доставка:</b> ${checkoutOrderDto.delivery.length >= 1 ? checkoutOrderDto.delivery : 'Не указан'}\n<b>Адрес:</b> ${checkoutOrderDto.address.length >= 1 ? checkoutOrderDto.address : 'Не указан'}\n<b>На сумму:</b> ${checkoutOrderDto.price} руб.` 
-//       await this.telegram.telegram.sendMessage(chatId, message, { parse_mode: 'HTML' });
-//       return {
-//         message: 'Успешно'
-//       }
-//     } catch (err) {
-//       console.log(err);
-//       throw new InternalServerErrorException('Ошибка сервера');
-//     }
-//   }
-
-//   async sendQuestion(chatId: number, questionDto: QuestionDto) {
-//     try {
-//         const message: string = `<b>Новая заявка!</b>\n\n<b>Имя: </b>${questionDto.name}\n<b>Телефон: </b>${questionDto.phone}\n<b>Вопрос: </b>${questionDto.question}`;
-        
-//         const inlineKeyboard: InlineKeyboardMarkup = {
-//             inline_keyboard: [
-//                 [
-//                     { text: 'Открыть страницу', url: String(questionDto.link) }
-//                 ]
-//             ]
-//         };
-
-//         await this.telegram.telegram.sendMessage(
-//             chatId,
-//             message,
-//             {
-//                 parse_mode: 'HTML',
-//                 reply_markup: inlineKeyboard
-//             }
-//         );
-//     } catch (err) {
-//         console.log(err);
-//         throw new InternalServerErrorException('Ошибка сервера');
-//     }
-//   }
 
 //   async sendReview(chatId: number, reviewDto: ReviewDto) {
 //     try {

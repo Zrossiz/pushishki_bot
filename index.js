@@ -75,24 +75,30 @@ router.post('/order/oneClick', async (req, res) => {
     try {
         const { name, phone, productName, link } = req.body;
 
-        const message = `<b>Покупка в один клик!</b>\n\n<b>Имя:</b> ${name}\n<b>Номер телефона:</b> ${phone}\n<b>Товар:</b> ${productName}\n\n ${link}`;
+        const message = `<b>Покупка в один клик!</b>\n\n<b>Имя:</b> ${name}\n<b>Номер телефона:</b> ${phone}\n<b>Товар:</b> ${productName}`;
+
+        const replyMarkup = {
+            inline_keyboard: [
+                [
+                    { text: 'Открыть страницу', url: link }
+                ]
+            ]
+        };
 
         await bot.telegram.sendMessage(
             chatId, 
             message,
             {
                 parse_mode: 'HTML',
+                reply_markup: replyMarkup
             }
-        ).then(() => {
-            res.status(200).json({ message: 'Сообщение успешно отправлено' });
-        }).catch((err) => {
-            console.error(err);
-            res.status(500).json({ message: 'Ошибка при отправке сообщения' });
-        });
+        );
+
+        res.status(200).json({ message: 'Сообщение успешно отправлено' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Ошибка сервера' });
-    };
+        res.status(500).json({ message: 'Ошибка при отправке сообщения' });
+    }
 });
 
 router.post('/review', async (req, res) => {

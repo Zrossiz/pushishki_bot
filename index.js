@@ -69,7 +69,31 @@ router.post('/order', async (req, res) => {
         console.error(err);
         res.status(500).json({ message: 'Ошибка сервера' });
     }
-})
+});
+
+router.post('/order/oneClick', async (req, res) => {
+    try {
+        const { name, phone, productName, link } = req.body;
+
+        const message = `<b>Покупка в один клик!</b>\n\n<b>Имя:</b> ${name}\n<b>Номер телефона:</b> ${phone}\n<b>Товар:</b> ${productName}\n\n ${link}`;
+
+        await bot.telegram.sendMessage(
+            chatId, 
+            message,
+            {
+                parse_mode: 'HTML',
+            }
+        ).then(() => {
+            res.status(200).json({ message: 'Сообщение успешно отправлено' });
+        }).catch((err) => {
+            console.error(err);
+            res.status(500).json({ message: 'Ошибка при отправке сообщения' });
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Ошибка сервера' });
+    };
+});
 
 router.post('/review', async (req, res) => {
     try {

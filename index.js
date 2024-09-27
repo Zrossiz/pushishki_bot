@@ -105,7 +105,6 @@ router.post('/review', async (req, res) => {
     try {
         const { id, username, rating, title, description } = req.body;
 
-        console.log(req.body);
         const message = `<b>Новый отзыв!</b>\n\n<b>Имя: </b>${username}\n<b>Рейтинг: </b>${rating}\n<b>Заголовок: </b>${title}\n<b>Комментарий: </b>${description}`;
         const replyMarkup = {
             inline_keyboard: [

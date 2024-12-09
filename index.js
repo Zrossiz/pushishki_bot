@@ -9,6 +9,7 @@ const router = express.Router();
 const port = process.env.PORT;
 const chatId = process.env.CHAT_ID;
 const botId = process.env.BOT_ID;
+const notifyUserId = process.env.NOTIFY_USER_ID;
 
 const bot = new Telegraf(botId);
 
@@ -131,6 +132,26 @@ router.post('/review', async (req, res) => {
         res.status(500).json({ message: 'Ошибка сервера' });   
     }
 });
+
+router.post('/new-price', async (req, res) => {
+    try {
+        const { productName, oldPrice, newPrice } = req.body;
+
+        const message = `<b>Изменение цены у ${productName}</b>\n\n Старая цена: ${oldPrice}\n Новая цена: ${newPrice}`
+        await bot.telegram.sendMessage(
+            notifyUserId,
+            message,
+            {
+                parse_mode: 'HTML'
+            }
+        )
+
+        return res.status(200).send()
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Ошибка сервера' }); 
+    }
+})
 
 app.listen(port, (err) => {
     if (err) {

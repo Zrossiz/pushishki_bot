@@ -132,6 +132,24 @@ router.post('/review', async (req, res) => {
     }
 });
 
+router.post('/new-price', async (req, res) => {
+    try {
+        const { productName, oldPrice, newPrice } = req.body;
+        const message = `<b>Новая цена у ${productName}</b>\n${newPrice}\n\n Старая цена: ${oldPrice}`
+        await bot.telegram.sendMessage(
+            process.env.CHAT_ID,
+            message,
+            {
+                parse_mode: 'HTML'
+            }
+        )
+        return res.status(200).send()
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Ошибка сервера' }); 
+    }
+})
+
 app.listen(port, (err) => {
     if (err) {
         console.log(err);

@@ -5,7 +5,7 @@ const checkHash = async (req, res, next) => {
         const bodyString = JSON.stringify(req.body);
         const computedHash = await calculateHash(bodyString);
     
-        if (bodyString !== computedHash) {
+        if (req.headers.computed !== computedHash) {
             return res.sendStatus(401)
         }
     

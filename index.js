@@ -3,12 +3,8 @@ const cors = require('cors');
 const express = require('express');
 const { Telegraf } = require('telegraf');
 const router   = require('./controller');
+const { BOT_ID, PORT } = require('./config')
 const app = express();
-
-const PORT = process.env.PORT;
-const CHAT_ID = process.env.CHAT_ID;
-const BOT_ID = process.env.BOT_ID;
-const NOTIFY_USER_ID = process.env.NOTIFY_USER_ID;
 
 const bot = new Telegraf(BOT_ID);
 
@@ -36,7 +32,5 @@ bot.on('callback_query', async (ctx) => {
 });
 
 module.exports = {
-    CHAT_ID,
-    NOTIFY_USER_ID,
     bot
 }

@@ -1,4 +1,4 @@
-const { CHAT_ID, bot, NOTIFY_USER_ID } = require("..");
+const {BOT_ID, CHAT_ID, NOTIFY_USER_ID} = require("../config")
 
 exports.notifyQuestion = async (req, res) => {
     try {

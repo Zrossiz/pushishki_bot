@@ -54,7 +54,7 @@ exports.notifyOneClickOrder = async (req, res) => {
   try {
     const { name, phone, productName, link } = req.body;
     console.log("body: ", req.body);
-    const message = `<b>Покупка в один клик!</b>\n\n<b>Имя:</b> ${name}\n<b>Номер телефона:</b> ${phone}\n<b>Товар:</b> ${productName}`;
+    const message = `<b>Покупка в один клик!</b>\n\n<b>Имя:</b> ${name}\n<b>Номер телефона:</b> <a href="tel:${phone}">${phone}</a>\n<b>Товар:</b> ${productName}`;
 
     const replyMarkup = {
       inline_keyboard: [[{ text: "Открыть страницу", url: link }]],

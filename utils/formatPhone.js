@@ -1,7 +1,8 @@
 exports.formatPhoneNumber = (phone) => {
-    if (!cleaned.startsWith("8")) {
+    if (!phone.startsWith("8") && !phone.startsWith("+7")) {
         return phone;
     }
+
 
     let cleaned = phone.replace(/[^\d]/g, "");
   

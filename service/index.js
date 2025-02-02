@@ -1,5 +1,6 @@
 const { CHAT_ID, NOTIFY_USER_ID } = require("../config");
 const { bot } = require("../bot");
+const { formatPhoneNumber } = require("../utils/formatPhone");
 
 exports.notifyQuestion = async (req, res) => {
   try {
@@ -53,7 +54,8 @@ exports.notifyOrder = async (req, res) => {
 exports.notifyOneClickOrder = async (req, res) => {
   try {
     const { name, phone, productName, link } = req.body;
-    const message = `<b>Покупка в один клик!</b>\n\n<b>Имя:</b> ${name}\n<b>Номер телефона:</b> ${phone}\n<b>Товар:</b> ${productName}`;
+    const formatPhoneNumber = formatPhoneNumber(phone);
+    const message = `<b>Покупка в один клик!</b>\n\n<b>Имя:</b> ${name}\n<b>Номер телефона:</b> ${formatPhoneNumber}\n<b>Товар:</b> ${productName}`;
 
     const replyMarkup = {
       inline_keyboard: [[{ text: "Открыть страницу", url: link }]],
